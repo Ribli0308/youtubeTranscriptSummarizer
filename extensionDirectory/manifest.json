@@ -1,0 +1,11 @@
+{ 
+    "manifest_version": 3,
+    "name": "YoutubeSummarize",
+    "description": "An extension to provide summarized transcript of a YouTube Subtitle eligible Video.",
+    "version": "1.0",
+    "permissions": ["activeTab"],
+    "page_action" : {
+        "default_popup": "popup.html"
+    }
+
+}
