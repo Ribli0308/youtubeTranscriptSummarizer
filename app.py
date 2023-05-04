@@ -5,10 +5,8 @@ import datetime
 from youtube_transcript_api import YouTubeTranscriptApi
 from transformers import pipeline
 
-# define a variable to hold you app
 app = Flask(__name__)
 
-# define your resource endpoints
 @app.route('/')
 def index_page():
     return render_template('index.html')
@@ -18,7 +16,7 @@ def get_time():
     return str(datetime.datetime.now())
 
 @app.route('/summarize', methods=['GET','POST'])
-def GetUrl():
+def get_url():
     video_url = request.args.get('youtube_url', '') 
     # return video_url
     if '=' in video_url:
@@ -44,7 +42,9 @@ def get_transcript(video_id):
         return "Error: an unknown error occurred while retrieving the transcript for video ID {}".format(video_id)
 
 def get_summarized_transcript(transcript, max_length = 1024):
+    #The Transformer model can only take text input size of maximum up to 1024 words
     chunks = [transcript[i: i + max_length] for i in range(0, len(transcript), max_length)]
+    #using pipeline API for summarization task
     summarization = pipeline("summarization")
     summary, summarized_transcript = '', []
     for chunk in chunks:
@@ -52,7 +52,6 @@ def get_summarized_transcript(transcript, max_length = 1024):
         summarized_transcript.append(summary)
     return ' '.join(summarized_transcript)
 
-# server the app when this file is run
 if __name__ == '__main__':
     app.run(debug = True)
 
